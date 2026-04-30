@@ -1,0 +1,26 @@
+<?php
+
+declare(strict_type=1);
+
+namespace App\Domain\UserContext\ValueObjects;
+
+use DomainException;
+
+final class Email
+{
+    private string $email;
+
+    public function __construct(string $email)
+    {
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)){
+            throw new DomainException('Email is not valid');
+        }
+
+        $this->email = $email;
+    }
+
+    public function __toString()
+    {
+        return $this->email;
+    }
+}

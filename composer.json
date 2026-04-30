@@ -1,0 +1,16 @@
+{
+    "name": "root/1-cleanarchprojectstudy-dev.local",
+    "authors": [
+        {
+            "name": "PedroNogueira97",
+            "email": "pedronogueiramoraes@hotmail.com"
+        }
+    ],
+    "description": "Projeto PHP básico",
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "require": {}
+}
