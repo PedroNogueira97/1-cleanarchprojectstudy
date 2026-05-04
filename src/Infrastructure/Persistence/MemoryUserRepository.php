@@ -22,7 +22,6 @@ class MemoryUserRepository implements UserRepository
         return json_encode(array_values($this->users[$id->__toString()])) ?? null;
 
     }
-
    
     public function findAll(): string
     {
