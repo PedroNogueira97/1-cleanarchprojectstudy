@@ -1,25 +1,31 @@
 <?php
 
-use App\Domain\Entities\Admin\Admin;
-use App\Domain\Entities\User;
-use App\Domain\Shared\Enums\UserRole;
-use App\Domain\Shared\ValueObjects\Email;
-use App\Domain\Shared\ValueObjects\Password;
-use App\Domain\Shared\ValueObjects\UUID;
+use App\Application\UseCase\CreateAdminUser;
+use App\Application\UseCase\CreateClientUser;
+
+use App\Infrastructure\Persistence\MemoryAdminRepository;
+use App\Infrastructure\Persistence\MemoryClientRepository;
+use App\Infrastructure\Persistence\MemoryUserRepository;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-$user = new User();
-$user->setId(new UUID());
-$user->setEmail(new Email(('pedronogueiraneto@gmail.com')));
-$user->setPassword(new Password('123456432333545'));
-$user->setUserRole(UserRole::ADMIN);
-$user->setCreatedAt(new DateTimeImmutable(''));
 
-$admin = new Admin(new UUID(), (string) $user->getId(), new DateTimeImmutable(''));
+$userRepo = new MemoryUserRepository();
+$adminRepo = new MemoryAdminRepository();
+$clientRepo = new MemoryClientRepository();
 
-echo '<pre>'; print_r($user);
-echo '<pre>'; print_r($admin);
+$useCase = new CreateClientUser($userRepo, $clientRepo);
+
+$useCase->execute(
+    'pedro@gmail.com',
+    'hash7253648928',
+    'Pedro Nogueira',
+    '+551489986767',
+    'Rua das Palmeiras, 55'
+);
+
+
+var_dump($clientRepo->findAll());
 
 
 

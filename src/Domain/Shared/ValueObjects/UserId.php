@@ -1,10 +1,9 @@
 <?php
 
-declare(strict_type=1);
+declare(strict_types=1);
 
 namespace App\Domain\Shared\ValueObjects;
 
-use App\Domain\Entities\User;
 
 final class UserId
 {
