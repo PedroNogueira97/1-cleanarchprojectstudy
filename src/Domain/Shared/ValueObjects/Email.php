@@ -2,7 +2,7 @@
 
 declare(strict_type=1);
 
-namespace App\Domain\UserContext\ValueObjects;
+namespace App\Domain\Shared\ValueObjects;
 
 use DomainException;
 

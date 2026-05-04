@@ -1,44 +1,35 @@
 <?php
 
-declare(strict_type=1);
+declare(strict_types=1);
 
-namespace App\Domain\UserContext\Entities;
+namespace App\Domain\Entities;
 
-use App\Domain\AdminContext\Entities\Admin;
-use App\Domain\ClientContext\Entities\Client;
-use App\Domain\UserContext\ValueObjects\Email;
-use App\Domain\UserContext\ValueObjects\Password;
-use App\Domain\UserContext\ValueObjects\UUID;
+use App\Domain\Shared\Enums\UserRole;
+use App\Domain\Shared\ValueObjects\Email;
+use App\Domain\Shared\ValueObjects\Password;
+use App\Domain\Shared\ValueObjects\UUID;
 
 use DateTimeInterface;
 
 final class User      
 {
+
     private UUID $id;
     private Email $email;
     private Password $password;
-    private object $role;  
+    private UserRole $role;
+    private DateTimeInterface $created_at;
 
-    public function __construct(string $role)
-    {
-        $map = [
-            'admin' => Admin::class,
-            'client'  => Client::class,
-        ];
 
-        if (!isset($map[$role])) {
-            throw new \InvalidArgumentException("Role not implemented: $role");
-        }
-
-        $this->role = new $map[$role]();
-    }
-
-    public function getRole(): object
+    public function getUserRole(): UserRole
     {
         return $this->role;
     }
 
-    private DateTimeInterface $created_at;
+    public function setUserRole(UserRole $user_role): void
+    {
+        $this->role = $user_role;
+    }
 
     public function getId(): UUID
     {

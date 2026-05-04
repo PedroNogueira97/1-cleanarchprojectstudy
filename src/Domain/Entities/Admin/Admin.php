@@ -1,16 +1,19 @@
 <?php
 
-declare(strict_type=1);
+declare(strict_types=1);
 
-namespace App\Domain\AdminContext\Entities;
-use App\Domain\UserContext\ValueObjects\UUID;
+namespace App\Domain\Entities\Admin;
+
+use App\Domain\Shared\ValueObjects\UUID;
 use DateTimeInterface;
 
 final class Admin
 {
-    private UUID $id;
-    private string $user_id;
-    private DateTimeInterface $created_at;
+    public function __construct(
+        private UUID $id,
+        private string $user_id,
+        private DateTimeInterface $created_at,
+    ) {}
 
     public function getId(): UUID
     {

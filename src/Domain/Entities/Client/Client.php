@@ -1,21 +1,25 @@
 <?php
 
-declare(strict_type=1);
+declare(strict_types=1);
 
-namespace App\Domain\ClientContext\Entities;
+namespace App\Domain\Entities\Client;
 
-use App\Domain\UserContext\ValueObjects\UUID;
+use App\Domain\Shared\ValueObjects\UserId;
+use App\Domain\Shared\ValueObjects\UUID;
 use DateTimeInterface;
 
 final class Client
 {
-    #Create value objects for name, phone and address
-    private UUID $id;
-    private string $user_id;
-    private string $full_name;
-    private string $phone;
-    private string $address;
-    private DateTimeInterface $created_at;
+
+    public function __construct(
+       #Create value objects for name, phone and address
+        private UUID $id,
+        private UserId $user_id,
+        private string $full_name,
+        private ?string $phone,
+        private ?string $address,
+        private DateTimeInterface $created_at,
+    ) {}
 
     public function getId(): UUID
     {
@@ -27,12 +31,12 @@ final class Client
         $this->id = $id;
     }
 
-    public function getUserId(): string
+    public function getUserId(): UserId
     {
         return $this->user_id;
     }
 
-    public function setUserId(string $user_id): void
+    public function setUserId(UserId $user_id): void
     {
         $this->user_id = $user_id;
     }
