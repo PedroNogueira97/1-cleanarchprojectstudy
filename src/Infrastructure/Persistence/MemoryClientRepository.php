@@ -15,9 +15,9 @@ class MemoryClientRepository implements ClientRepository
         $this->clients[$client->getUserId()->__toString()] = $client;
     }
 
-    public function findAll(): array
+    public function findAll(): string
     {
-        return $this->clients;
+        return json_encode(array_values($this->clients), JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
     }
 
     public function findByUserId(UserId $userId): ?Client

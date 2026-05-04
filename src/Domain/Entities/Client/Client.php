@@ -7,8 +7,9 @@ namespace App\Domain\Entities\Client;
 use App\Domain\Shared\ValueObjects\UserId;
 use App\Domain\Shared\ValueObjects\UUID;
 use DateTimeInterface;
+use JsonSerializable;
 
-final class Client
+final class Client implements JsonSerializable
 {
 
     public function __construct(
@@ -20,6 +21,18 @@ final class Client
         private ?string $address,
         private DateTimeInterface $created_at,
     ) {}
+
+    public function jsonSerialize(): mixed
+    {
+        return [
+            'id'         => $this->id->__toString(),
+            'user_id'    => $this->user_id->__toString(),
+            'full_name'  => $this->full_name,
+            'phone'      => $this->phone,
+            'address'    => $this->address,
+            'created_at' => $this->created_at->format(DateTimeInterface::ATOM),
+        ];
+    }
 
     public function getId(): UUID
     {

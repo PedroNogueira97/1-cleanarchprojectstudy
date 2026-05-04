@@ -17,20 +17,20 @@ class MemoryUserRepository implements UserRepository
 
     }
 
-    public function findById(UserId $id): ?User
+    public function findById(UserId $id): ?string
     {
-        return $this->users[$id->__toString()] ?? null;
+        return json_encode(array_values($this->users[$id->__toString()])) ?? null;
 
     }
 
    
-    public function findAll(): array
+    public function findAll(): string
     {
-        return $this->users;
+        return json_encode(array_values($this->users), JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
     }
 
-    public function findByEmail(string $email): ?User
+    public function findByEmail(string $email): ?string
     {
-        return $this->users[$email];
+        return json_encode(array_values($this->users[$email]), JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
     }
 }

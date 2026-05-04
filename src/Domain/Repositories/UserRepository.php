@@ -9,9 +9,9 @@ interface UserRepository
 {
     public function save(User $user): void;
 
-    public function findById(UserId $id): ?User;
+    public function findById(UserId $id): ?string;
 
-    public function findAll(): array;
+    public function findAll(): string;
 
-    public function findByEmail(string $email): ?User;
+    public function findByEmail(string $email): ?string;
 }

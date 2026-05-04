@@ -9,8 +9,8 @@ interface AdminRepository
 {
     public function save(Admin $admin): void;
 
-    public function findAll(): array;
+    public function findAll(): string;
     
-    public function findByUserId(UserId $userId): ?Admin;
+    public function findByUserId(UserId $userId): ?string;
     
 }

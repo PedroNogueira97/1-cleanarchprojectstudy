@@ -31,12 +31,13 @@ final class CreateClientUser
         string $address
     ): void
     {
-        $user = new User();
-        $user->setId(new UUID());
-        $user->setEmail(new Email(($email)));
-        $user->setPassword(new Password($passwordHash));
-        $user->setUserRole(UserRole::CLIENT);
-        $user->setCreatedAt(new DateTimeImmutable());
+        $user = new User(
+            new UUID(),
+            new Email(($email)),
+            new Password($passwordHash),
+            UserRole::CLIENT,
+            new DateTimeImmutable()
+        );
 
         $this->users->save($user);  
 
