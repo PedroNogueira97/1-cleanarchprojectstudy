@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Application\UseCase;
+namespace App\Application\UseCase\CreateAdminUser;
 
+use App\Application\UseCase\CreateAdminUser\CreateAdminUserInputDTO;
+use App\Application\UseCase\CreateAdminUser\CreateAdminUserOutputDTO;
 use App\Domain\Entities\Admin\Admin;
 use App\Domain\Entities\User;
 use App\Domain\Shared\Enums\UserRole;
@@ -23,15 +25,12 @@ final class CreateAdminUser
         )
     {}
 
-    public function execute(
-        string $email,
-        string $passwordHash
-    ): void
+    public function execute(CreateAdminUserInputDTO $input): CreateAdminUserOutputDTO
     {
         $user = new User(
             new UUID(),
-            new Email(($email)),
-            new Password($passwordHash),
+            new Email($input->email),
+            new Password($input->password),
             UserRole::ADMIN,
             new DateTimeImmutable()
         );
@@ -45,5 +44,12 @@ final class CreateAdminUser
         );
 
         $this->admins->save($admin);
+
+        return new CreateAdminUserOutputDTO(
+            userId: (string) $user->getId(),
+            email: (string) $user->getEmail(),
+            userRole: $user->getUserRole(),
+            //created_at: (string) $user->getCreatedAt()
+        );
     }
 }
