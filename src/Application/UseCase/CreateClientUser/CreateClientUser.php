@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Application\UseCase;
 
+use App\Application\UseCase\CreateClientUser\CreateClientUserInputDTO;
+use App\Application\UseCase\CreateClientUser\CreateClientUserOutputDTO;
 use App\Domain\Entities\Client\Client;
 use App\Domain\Entities\User;
 use App\Domain\Shared\Enums\UserRole;
@@ -23,18 +25,12 @@ final class CreateClientUser
         )
     {}
 
-    public function execute(
-        string $email,
-        string $passwordHash,
-        string $full_name,
-        string $phone,
-        string $address
-    ): void
+    public function execute(CreateClientUserInputDTO $input): CreateClientUserOutputDTO
     {
         $user = new User(
             new UUID(),
-            new Email(($email)),
-            new Password($passwordHash),
+            new Email($input->email),
+            new Password($input->password),
             UserRole::CLIENT,
             new DateTimeImmutable()
         );
@@ -44,12 +40,20 @@ final class CreateClientUser
         $client = new Client(
             new UUID(),
             new UserId((string) $user->getId()),
-            $full_name,
-            $phone,
-            $address,
+            $input->full_name,
+            $input->phone,
+            $input->address,
             new DateTimeImmutable()
         );
 
         $this->clients->save($client);
+
+        return new CreateClientUserOutputDTO(
+            userId: (string) $user->getId(),
+            email: (string) $user->getEmail(),
+            full_name: (string) $client->getFullName(),
+            phone: (string) $client->getPhone(),
+            address: (string) $client->getAddress()
+        );
     }     
 }
