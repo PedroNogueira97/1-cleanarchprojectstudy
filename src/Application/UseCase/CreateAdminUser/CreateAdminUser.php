@@ -16,40 +16,45 @@ use App\Domain\Shared\ValueObjects\UUID;
 use DateTimeImmutable;
 use App\Domain\Repositories\UserRepository;
 use App\Domain\Repositories\AdminRepository;
+use App\Domain\Repositories\TransactionalManagerRepository;
 
 final class CreateAdminUser
 {
     public function __construct(
         private UserRepository $users,
-        private AdminRepository $admins
+        private AdminRepository $admins,
+        private TransactionalManagerRepository $transaction
         )
     {}
 
     public function execute(CreateAdminUserInputDTO $input): CreateAdminUserOutputDTO
     {
-        $user = new User(
-            new UUID(),
-            new Email($input->email),
-            new Password($input->password),
-            UserRole::ADMIN,
-            new DateTimeImmutable()
-        );
+        return $this->transaction->transactional(function () use ($input) {
+            $user = new User(
+                new UUID(),
+                new Email($input->email),
+                new Password($input->password),
+                UserRole::ADMIN,
+                new DateTimeImmutable()
+            );
 
-        $this->users->save($user);  
+            $this->users->save($user);  
 
-        $admin = new Admin(
-            new UUID(),
-            new UserId((string) $user->getId()),
-            new DateTimeImmutable()
-        );
+            $admin = new Admin(
+                new UUID(),
+                new UserId((string) $user->getId()),
+                new DateTimeImmutable()
+            );
 
-        $this->admins->save($admin);
+            $this->admins->save($admin);
 
-        return new CreateAdminUserOutputDTO(
-            userId: (string) $user->getId(),
-            email: (string) $user->getEmail(),
-            userRole: $user->getUserRole(),
-            //created_at: (string) $user->getCreatedAt()
-        );
+            return new CreateAdminUserOutputDTO(
+                userId: (string) $user->getId(),
+                email: (string) $user->getEmail(),
+                userRole: $user->getUserRole(),
+                //created_at: (string) $user->getCreatedAt()
+            );
+        });
+            
     }
 }
