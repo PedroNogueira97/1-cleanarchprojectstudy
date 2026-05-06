@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Application\UseCase;
+namespace App\Application\UseCase\CreateProduct;
 
 use App\Application\UseCase\CreateProduct\CreateProductInputDTO;
 use App\Application\UseCase\CreateProduct\CreateProductOutputDTO;
